@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>social_tracker — TikTok callback</title>
+  <style>
+    body { font-family: sans-serif; max-width: 640px; margin: 40px auto; padding: 0 16px; line-height: 1.5; }
+    code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; word-break: break-all; }
+    .box { background: #f9f9f9; border: 1px solid #ddd; padding: 16px; border-radius: 8px; margin-top: 16px; }
+    .error { color: #b00020; }
+  </style>
+</head>
+<body>
+  <h1>TikTok authorization</h1>
+  <div id="result">Waiting for redirect...</div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+    const error = params.get("error");
+    const el = document.getElementById("result");
+
+    if (error) {
+      el.innerHTML = `<p class="error"><strong>Error:</strong> ${error}</p>`;
+    } else if (code) {
+      el.innerHTML = `
+        <p>Authorization successful. Copy this code:</p>
+        <div class="box"><code id="code">${code}</code></div>
+        <p>Then run in terminal:</p>
+        <div class="box"><code>python tiktok_token.py ${code}</code></div>
+      `;
+    } else {
+      el.innerHTML = "<p>No authorization code in URL.</p>";
+    }
+  </script>
+</body>
+</html>
